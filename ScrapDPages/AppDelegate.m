@@ -8,6 +8,9 @@
 
 #import "AppDelegate.h"
 
+#include <Selenium/SERemoteWebDriver.h>
+#include <Selenium/SECapabilities.h>
+
 @interface AppDelegate ()
 
 @end
@@ -16,6 +19,19 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
+    SECapabilities *c = [SECapabilities new];
+    [c setPlatformName:@"MAC"];
+    [c setBrowserName:@"safari"];
+    //[c setVersion:@"19.0.2"];
+
+    NSError *error;
+    SERemoteWebDriver *driver;
+    driver = [[SERemoteWebDriver alloc] initWithServerAddress:@"192.168.0.103" port:4444
+                    desiredCapabilities:c requiredCapabilities:nil error:&error];
+
+    [driver setUrl:[[NSURL alloc] initWithString:@"https://hoopshype.com/salaries/players/"]];
+    NSArray *a = [driver findElementsBy:[SEBy idString:@"//td[@class=\"name\""]];
+    NSLog(@"%@", a);
 }
 
 
